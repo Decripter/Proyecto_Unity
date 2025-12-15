@@ -9,7 +9,6 @@ public class GroundChecker : MonoBehaviour
 
     void Start()
     {
-        WorldManager.instance.Utopia();
     }
 
     void Update()
@@ -17,7 +16,7 @@ public class GroundChecker : MonoBehaviour
         _Tocando = Physics.CheckSphere(transform.position, RadioEsfera, Suelo);
         if (_Tocando)
         {
-            Debug.Log("Estoy tocando suelo");
+            //Debug.Log("Estoy tocando suelo");
         }
 
     }
