@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -24,6 +25,8 @@ public class Movement : MonoBehaviour
     private WallChecker _wallCheckerR;
     [SerializeField]
     private WallChecker _wallCheckerL;
+
+   
     void Start()
     {
         _Controller = GetComponent<CharacterController>();

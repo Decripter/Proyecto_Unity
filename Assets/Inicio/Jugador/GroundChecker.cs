@@ -7,6 +7,11 @@ public class GroundChecker : MonoBehaviour
     public bool Tocando => _Tocando;
     private bool _Tocando;
 
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, RadioEsfera);
+    }
     void Start()
     {
     }
