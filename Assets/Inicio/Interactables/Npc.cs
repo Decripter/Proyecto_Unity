@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 
 using TMPro;
@@ -15,6 +16,20 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
     private bool _interactuable = true;
 
     bool jugadorestacerca;
+
+    private void OnEnable()
+    {
+        WorldManager.Change += OnChange;
+    }
+    private void OnDisable()
+    {
+        WorldManager.Change -= OnChange;
+    }
+    private void OnChange(int obj)
+    {
+        
+    }
+
     void Start()
     {
         _renderer = GetComponent<Renderer>();
@@ -66,7 +81,6 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
             Debug.Log("Has matado a un Npc");
             Destroy(gameObject);
         }
-        
     }
 
     

@@ -15,6 +15,6 @@ public class Camara_Jugador : MonoBehaviour
     {
 
         var posx = Mathf.Clamp(transform.position.x, -limiteX, limiteX);
-        transform.position = new Vector3(posx, transform.position.y,-10 );
+        transform.position = new Vector3(posx, transform.position.y, transform.position.z);
     }
 }

@@ -20,6 +20,10 @@ public class Movement : MonoBehaviour
 
     [SerializeField]
     private GroundChecker _GroundChecker;
+    [SerializeField]
+    private WallChecker _wallCheckerR;
+    [SerializeField]
+    private WallChecker _wallCheckerL;
     void Start()
     {
         _Controller = GetComponent<CharacterController>();
@@ -31,7 +35,7 @@ public class Movement : MonoBehaviour
     {
         mover();
         AplicarGravedad();
-        if (Input.GetKeyDown(KeyCode.Space) && _GroundChecker.Tocando)
+        if (Input.GetKeyDown(KeyCode.Space) && (_GroundChecker.Tocando || _wallCheckerL.Tocando || _wallCheckerR.Tocando))
         {
             salto();
         }
