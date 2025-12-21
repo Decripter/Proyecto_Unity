@@ -16,7 +16,7 @@ public class WallChecker : MonoBehaviour
         _Tocando = Physics.CheckSphere(transform.position, RadioEsfera, Pared);
         if (_Tocando)
         {
-            Debug.Log("Estoy tocando una pared");
+            //Debug.Log("Estoy tocando una pared");
         }
 
     }

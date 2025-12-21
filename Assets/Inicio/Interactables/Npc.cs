@@ -15,10 +15,11 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
     private TextMeshProUGUI _texto;
     private bool _interactuable = true;
 
-    bool jugadorestacerca;
+    private bool jugadorestacerca;
 
     private void OnEnable()
     {
+        jugadorestacerca = false;
         WorldManager.Change += OnChange;
     }
     private void OnDisable()

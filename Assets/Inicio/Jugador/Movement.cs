@@ -40,8 +40,13 @@ public class Movement : MonoBehaviour
         AplicarGravedad();
         if (Input.GetKeyDown(KeyCode.Space) && (_GroundChecker.Tocando || _wallCheckerL.Tocando || _wallCheckerR.Tocando))
         {
+            /*if(Input )
+            {
+
+            }*/
             salto();
         }
+
     }
 
     private void salto()
@@ -66,7 +71,7 @@ public class Movement : MonoBehaviour
         
         Vector3 movertarget = (transform.right * x) * speed; //El move original
         currentSpeed = Vector3.Lerp(currentSpeed, movertarget, aceleracion * Time.deltaTime);
-        
+
 
        _Controller.Move(currentSpeed * Time.deltaTime);
     }

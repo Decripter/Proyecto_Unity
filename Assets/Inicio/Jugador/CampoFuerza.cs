@@ -1,0 +1,46 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Android;
+using UnityEngine.UIElements;
+
+public class CampoFuerza : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public ParticleSystemForceField ForceField;
+
+    private void OnEnable()
+    {
+        WorldManager.Change += OnChange;
+    }
+
+    private void OnDisable()
+    {
+        WorldManager.Change -= OnChange;
+    }
+    private void OnChange(int estadoMundo)
+    {
+        if (estadoMundo < 0)
+        {
+            // MUNDO DISTÓPICO: Se asustan (Fuerza positiva hacia afuera)
+            ForceField.gravity = 25f;
+            ForceField.drag = 0.5f; // Añade un poco de resistencia
+        }
+        else
+        {
+            // MUNDO UTÓPICO: Se acercan (Fuerza negativa hacia el centro)
+            ForceField.gravity = -15f;
+            ForceField.drag = 0.1f;
+        }
+    }
+
+        void Start()
+                {
+                }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}

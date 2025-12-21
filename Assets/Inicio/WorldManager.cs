@@ -6,7 +6,7 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager instance;
     private int estadomundo = 0;
-    public static Action<int> Change ;
+    public static Action<int> Change;
 
     public TextMeshProUGUI info;
 
