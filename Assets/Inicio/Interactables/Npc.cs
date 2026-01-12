@@ -46,7 +46,8 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
     // Update is called once per frame
     void Update()
     {
-        
+        if(jugadorestacerca)
+        { }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,7 +66,7 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
     {
         if(_interactuable)
         {
-            WorldManager.instance.Utopia();
+            WorldManager.instance.Estado(3);
             Debug.Log("Has hablado con un Npc");
 
             _renderer.material.color = Color.white;
@@ -78,11 +79,10 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
     {
         if(_interactuable)
         {
-            WorldManager.instance.Distopia();
+            WorldManager.instance.Estado(-3);
             Debug.Log("Has matado a un Npc");
             Destroy(gameObject);
         }
     }
 
-    
 }

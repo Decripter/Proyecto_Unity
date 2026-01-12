@@ -35,7 +35,7 @@ public class Interac_Jugador : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         jugadorestacerca = true;
-        Debug.Log(other.gameObject);
+        //Debug.Log(other.gameObject);
         if(other.TryGetComponent(out IInteractable interactable))
         {
             _interactuableActual = interactable;

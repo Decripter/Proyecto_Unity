@@ -27,13 +27,13 @@ public class Salud_Jugador : MonoBehaviour, Idanable
     public void CurarDano()
     {
         SaludJugador++;
-        throw new System.NotImplementedException();
+        Debug.Log("Curando daño");
     }
 
-    public void RecibirDano()
+    public void RecibirDano(int cantidad)
     {
-        SaludJugador--;
-        Debug.Log("recibiendo daño");
-        throw new System.NotImplementedException();
+        SaludJugador = SaludJugador - cantidad;
+        Debug.Log("Recibiendo daño");
+
     }
 }

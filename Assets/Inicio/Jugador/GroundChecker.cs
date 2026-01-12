@@ -22,6 +22,7 @@ public class GroundChecker : MonoBehaviour
         if (_Tocando)
         {
             //Debug.Log("Estoy tocando suelo");
+
         }
 
     }

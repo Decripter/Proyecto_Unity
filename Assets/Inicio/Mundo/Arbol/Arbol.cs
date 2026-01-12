@@ -18,6 +18,9 @@ public class Arbol : MonoBehaviour
 
     float tiempo;
     private Coroutine rutinaCambio;
+
+    float PorcentajeObjetivo;
+    float PorcentajeActual;
     private void OnEnable()
     {
         WorldManager.Change += OnChange;
@@ -28,17 +31,28 @@ public class Arbol : MonoBehaviour
     }
     private void OnChange(int estadoMundo)
     {
-        tiempo += Time.deltaTime * 1;
-        if (estadoMundo < 0)
+        tiempo += Time.deltaTime;
+
+        float porcentaje = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
+        Actualizar(porcentaje);
+        PorcentajeObjetivo = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
+        /*if (estadoMundo < 0)
         {
             rutinaCambio = StartCoroutine(Transicion(_hojasDist, _paloDist));
         }
         if (estadoMundo >= 0)
         {
             rutinaCambio = StartCoroutine(Transicion(_hojasUto, _paloUto));
-        }
+        }*/
     }
 
+    private void Actualizar(float porcentaje)
+    {
+        _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasUto.color, porcentaje);
+        _palo.material.color = Color.Lerp(_paloDist.color, _paloUto.color, porcentaje);
+    }
+
+    ///Lerp Perrón
     IEnumerator Transicion(Material hojasDist, Material paloDist)
     {
         float duracion = 2.0f; // Tiempo que tarda en cambiar (2 segundos)
@@ -66,12 +80,13 @@ public class Arbol : MonoBehaviour
 
     void Start()
     {
-        
+            OnChange(0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        PorcentajeActual = Mathf.MoveTowards(PorcentajeActual, PorcentajeObjetivo, Time.deltaTime * 0.5f);
+        Actualizar(PorcentajeActual);
     }
 }

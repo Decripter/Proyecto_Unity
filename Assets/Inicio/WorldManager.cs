@@ -4,11 +4,44 @@ using System;
 
 public class WorldManager : MonoBehaviour
 {
+    public AudioSource Lluvia;
+    
     public static WorldManager instance;
-    private int estadomundo = 0;
+    public int estadomundo = 0;
     public static Action<int> Change;
 
     public TextMeshProUGUI info;
+
+
+    [Header("Mecánica de Altura")]
+    public Transform jugador;
+    private float alturaMaximaAlcanzada = 0f;
+    public float sensibilidadSubida = 1f; // Cuánto sube el valor por cada metro nuevo
+    public float penalizacionCaida = 2f;  // Cuánto baja el valor al caer
+
+    public float ProximoCambio;
+    public float intervaloUtopico = 2f; // Cada cuánto tiempo sucede
+    public float intervaloDistopico = 3f; // Cada cuánto tiempo sucede
+    private void OnEnable()
+    {
+        WorldManager.Change += OnChange;
+    }
+    private void OnDisable()
+    {
+        WorldManager.Change -= OnChange;
+    }
+    private void OnChange(int estadoMundo)
+    {
+        float t = Mathf.InverseLerp(-10f, 0f, (float)estadoMundo);
+        if (estadoMundo < 0)
+        {
+            Lluvia.volume = Mathf.Lerp(1f, 0f, t);
+        }
+        else
+        {
+            Lluvia.volume = 0;
+        }
+    }
 
     private void Awake()
     {
@@ -19,22 +52,62 @@ public class WorldManager : MonoBehaviour
     private void Update()
     {
         info.text = "Mundo: " + estadomundo;
+
+        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Estado(1);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Estado(-1);
+        }
+
+        AlturaJugador();
     }
 
-    public void Utopia()
+    private void AlturaJugador()
     {
-        estadomundo += 1;
-        Change?.Invoke(estadomundo);
-    }
-    public void Distopia()
-    {
-        estadomundo -= 1;
-        Change?.Invoke(estadomundo);
+        float alturaActual = jugador.position.y;
+
+        // CASO A: El jugador está superando su récord (EL MUNDO MEJORA)
+        if (alturaActual > alturaMaximaAlcanzada)
+        {
+            // Calculamos cuánto ha superado el récord en este frame
+            float diferencia = alturaActual - alturaMaximaAlcanzada;
+
+            if (Time.time >= ProximoCambio && estadomundo <= 10)
+            {
+                    Estado(1);
+                    ProximoCambio = Time.time + intervaloUtopico;
+                    alturaMaximaAlcanzada = alturaActual;
+            }
+
+        }
+        
+        
+        // CASO B: El jugador ha caído por debajo de su récord (EL MUNDO EMPEORA)
+        if (alturaActual < alturaMaximaAlcanzada - 3f) // Un pequeño margen para evitar errores
+        {
+
+            if (Time.time >= ProximoCambio && estadomundo >= -10)
+            {
+                Estado(-1);
+                ProximoCambio = Time.time + intervaloDistopico;
+                
+            }
+        }
+
+
     }
 
-    public int GetEstado()
+    public void Estado(int valor)
     {
-        return estadomundo;
+        estadomundo += valor;
+        Change?.Invoke(estadomundo);
+    }
+    public float GetEstado()
+    {
+        return Mathf.InverseLerp(-10f,10f,estadomundo);
     }
 
 

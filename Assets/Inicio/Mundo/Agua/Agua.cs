@@ -7,15 +7,19 @@ using UnityEngine.Rendering;
 public class Agua : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public Renderer _renderer;
+    public Renderer _renderer2;
     public Material _Agua;
+    public Material _neutro;
     public Material _Lava;
+
     public Color EmisionLava;
     public Color EmisionAgua;
+    public Color EmisionNeutra;
 
+    float PorcentajeObjetivo;
+    float PorcentajeActual;
 
     float tiempo;
-    private Coroutine RutinaCambio;
 
     private Color Inicial;
     private Color InicialEm;
@@ -24,11 +28,27 @@ public class Agua : MonoBehaviour
 
     private int estado;
 
+    public float intervalo = 2f; // Cada cuánto tiempo sucede
+    private float proximoDano;
+
+    void Start()
+    {
+        OnChange(0);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        PorcentajeActual = Mathf.MoveTowards(PorcentajeActual, PorcentajeObjetivo, Time.deltaTime * 0.5f);
+        Actualizar(PorcentajeActual);
+    }
+
     private void OnEnable()
     {
         WorldManager.Change += OnChange;
         EmisionLava = _Lava.GetColor("_EmissionColor");
         EmisionAgua = _Agua.GetColor("_EmissionColor");
+        EmisionNeutra = _neutro.GetColor("_EmissionColor");
     }
     private void OnDisable()
     {
@@ -36,92 +56,65 @@ public class Agua : MonoBehaviour
     }
     private void OnChange(int estadoMundo)
     {
-        tiempo += Time.deltaTime * 1;
-        if (estadoMundo < 0)
-        {
-            RutinaCambio = StartCoroutine(Transicion(_Lava, EmisionLava));
-            //Debug.Log("Lava");
-        }
-        if (estadoMundo >= 0)
-        {
+        tiempo += Time.deltaTime;
 
-            RutinaCambio = StartCoroutine(Transicion(_Agua, EmisionAgua));
-            //Debug.Log("Agua");
-        }
-        estado = estadoMundo;
+        float porcentaje = Mathf.InverseLerp(-2f, 2f, (float)estadoMundo);
+        Actualizar(porcentaje);
+        PorcentajeObjetivo = Mathf.InverseLerp(-2f, 2f, (float)estadoMundo);
+        estado = estadoMundo; //Actualizar el valor, para que jale aplicar daño
     }
 
-    IEnumerator Transicion(Material Final, Color EmisionFinal)
-    {
-        float duracion = 2.0f; // Tiempo que tarda en cambiar (2 segundos)
-        float transcurrido = 0;
-
-        while (transcurrido < duracion)
-        {
-            transcurrido += Time.deltaTime;
-            float t = transcurrido / duracion; // Crea un valor de 0 a 1
-
-            Inicial = _renderer.material.color;
-            InicialEm = _renderer.material.GetColor("_EmissionColor");
-
-            // Aplicamos el Lerp
-            _renderer.material.color = Color.Lerp(Inicial, Final.color, t);
-            Color colorInterp = Color.Lerp(InicialEm, EmisionFinal, t);
-
-            _renderer.material.SetColor("_EmissionColor", colorInterp);
-
-            yield return null; // Espera al siguiente frame
-        }
-
-        _renderer.material.color = Final.color;
-    }
-
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Idanable idanable))
-        {
-            //danableactual = idanable;
-            //danableactual.RecibirDano();
-            Coroutine rutina = StartCoroutine(DanoPeriodico(idanable));
-        }
-
-        Debug.Log(other);
-
-    }
-    IEnumerator DanoPeriodico(Idanable victima)
+    private void Actualizar(float porcentaje)
     {
         if(estado < 0)
         {
-            while (true) // Bucle infinito mientras la corrutina esté viva
-            {
-                victima.RecibirDano();
-                Debug.Log("Recibiendo daño");
-                yield return new WaitForSeconds(0.5f);
-            }
+            float t = Mathf.InverseLerp(-10f, 0f, (float)estado);
+            _renderer2.material.color = Color.Lerp(_Lava.color, _neutro.color, t);
+            Color colorInterp = Color.Lerp(EmisionLava, EmisionNeutra, t);
+            _renderer2.material.SetColor("_EmissionColor", colorInterp);
         }
-
-        if (estado >= 0)
+        else
         {
-            while (true) // Bucle infinito mientras la corrutina esté viva
+            float t = Mathf.InverseLerp(0f, 10f, (float)estado);
+            _renderer2.material.color = Color.Lerp(_neutro.color, _Agua.color, t);
+            Color colorInterp2 = Color.Lerp(EmisionNeutra, EmisionAgua, t);
+            _renderer2.material.SetColor("_EmissionColor", colorInterp2);
+        }
+    }
+
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out Idanable idanable))
+        {         
+            if (Time.time >= proximoDano)
             {
-                victima.CurarDano();
-                Debug.Log("Curando daño");
-                yield return new WaitForSeconds(0.5f);
+                if(other.CompareTag("Player"))
+                {
+                    DanoPeriodico(other, idanable);
+                    
+                    proximoDano = Time.time + intervalo;
+                }
             }
         }
 
+        //Debug.Log(other);
+    }
+
+    private void DanoPeriodico(Collider other, Idanable victima)
+    {
+        if (estado < 0)
+        {
+            Vector2 direcciondano = new Vector2(transform.position.x, 0);
+            other.gameObject.GetComponent<Movement>().RecibeDano(direcciondano, 5);
+                //Debug.Log("Recibiendo daño");
+        }
+
+        if (estado > 0)
+        {
+                victima.CurarDano();
+                //Debug.Log("Curando daño");  
+        }
     }
 }

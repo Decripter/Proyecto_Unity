@@ -35,12 +35,12 @@ public class Particulas : MonoBehaviour
         if (estadoMundo < 0)
         {
             RutinaCambio = StartCoroutine(Transicion(Color.gray));
-            Debug.Log("Negro");
+            //Debug.Log("Negro");
         }
         if (estadoMundo >= 0)
         {
             RutinaCambio = StartCoroutine(Transicion(Color.yellow));
-            Debug.Log("Amarillo");
+            //Debug.Log("Amarillo");
         }
     }
 
