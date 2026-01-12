@@ -7,41 +7,54 @@ using Random = UnityEngine.Random;
 
 public class EfectoRayo : MonoBehaviour
 {
-    public CanvasGroup canvasGroup; // Arrastra el CanvasGroup del objeto aquí
+    public CanvasGroup canvasGroup;
     public CameraShake cameraShake;
     public AudioSource trueno;
+    private int estadoActualMundo;
 
-    private void OnEnable()
+    private void OnEnable() => WorldManager.Change += ActualizarEstado;
+    private void OnDisable() => WorldManager.Change -= ActualizarEstado;
+
+    void ActualizarEstado(int estado) => estadoActualMundo = estado;
+
+    void Start()
     {
-        WorldManager.Change += IntentarRayo;
-    }
-    
-    private void OnDisable()
-    {
-     WorldManager.Change -= IntentarRayo;
+        // ESTO inicia el ciclo infinito que se mantiene activo siempre
+        StartCoroutine(BucleAmbiental());
     }
 
-    void IntentarRayo(int estado)
+    IEnumerator BucleAmbiental()
     {
-        // Solo hay rayos si el mundo está muy mal (ej. menor a -5)
-        if (estado < -5)
+        while (true) // Se mantiene activo mientras el objeto exista
         {
-            // Un 10% de probabilidad de que caiga un rayo cuando el mundo cambia
-            if (UnityEngine.Random.value < 2f)
+            // Esperamos 2 segundos entre cada "intento" de rayo
+            yield return new WaitForSeconds(2f);
+
+            // Solo intentamos si el mundo está mal
+            if (estadoActualMundo <= -5)
             {
-                StartCoroutine(DispararRayo());
+                if (Random.value < 0.2f) // 50% de probabilidad
+                {
+                    // Ejecutamos el efecto visual (sin detener este bucle)
+                    StartCoroutine(EjecutarEfectoVisual());
+                }
             }
         }
     }
-    IEnumerator DispararRayo()
+
+    IEnumerator EjecutarEfectoVisual()
     {
-        canvasGroup.alpha = 0.8f; // Aparece de golpe
+        // 1. El estallido inicial (Sonido y Shake se activan UNA vez)
+        canvasGroup.alpha = 0.8f;
+        trueno.Play();
+        cameraShake.Shake(0.2f, 0.3f);
+
+        // 2. El desvanecimiento suave (esto sí es un bucle rápido de frames)
         while (canvasGroup.alpha > 0)
         {
-            cameraShake.Shake(0.2f, 0.3f);
-            canvasGroup.alpha -= Time.deltaTime * 2f; // Se desvanece
-            trueno.Play();
-            yield return null;
+            canvasGroup.alpha -= Time.deltaTime * 2f; // Se desvanece en medio segundo aprox
+            yield return null; // Espera al siguiente frame
         }
     }
+
 }

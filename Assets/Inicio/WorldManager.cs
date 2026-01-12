@@ -5,7 +5,8 @@ using System;
 public class WorldManager : MonoBehaviour
 {
     public AudioSource Lluvia;
-    
+    public AudioSource Pajaros;
+
     public static WorldManager instance;
     public int estadomundo = 0;
     public static Action<int> Change;
@@ -32,15 +33,23 @@ public class WorldManager : MonoBehaviour
     }
     private void OnChange(int estadoMundo)
     {
-        float t = Mathf.InverseLerp(-10f, 0f, (float)estadoMundo);
+        float t1 = Mathf.InverseLerp(-10f, 0f, (float)estadoMundo);
+        float t2 = Mathf.InverseLerp(0f, 10f, (float)estadoMundo);
+
         if (estadoMundo < 0)
         {
-            Lluvia.volume = Mathf.Lerp(1f, 0f, t);
+            Lluvia.volume = Mathf.Lerp(1f, 0f, t1);
         }
-        else
+        if(estadoMundo > 0)
+        {
+            Pajaros.volume = Mathf.Lerp(0f, 1f, t2);
+        }
+        if(estadoMundo == 0)
         {
             Lluvia.volume = 0;
+            Pajaros.volume = 0;
         }
+
     }
 
     private void Awake()

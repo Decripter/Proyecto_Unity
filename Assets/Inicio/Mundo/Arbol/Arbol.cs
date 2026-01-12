@@ -8,10 +8,15 @@ public class Arbol : MonoBehaviour
     public Renderer _hojas;
     public Renderer _palo;
 
+
+
     public Material _hojasDist;
     public Material _paloDist;
+
     public Material _hojasUto;
-    public Material _paloUto;
+
+    public Material _paloNeutro;
+    public Material _hojasNeutro;
 
     private Color _hojasinicial;
     private Color _paloinicial;
@@ -21,6 +26,8 @@ public class Arbol : MonoBehaviour
 
     float PorcentajeObjetivo;
     float PorcentajeActual;
+
+    private int estado;
     private void OnEnable()
     {
         WorldManager.Change += OnChange;
@@ -44,12 +51,24 @@ public class Arbol : MonoBehaviour
         {
             rutinaCambio = StartCoroutine(Transicion(_hojasUto, _paloUto));
         }*/
+        estado = estadoMundo;
     }
 
     private void Actualizar(float porcentaje)
     {
-        _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasUto.color, porcentaje);
-        _palo.material.color = Color.Lerp(_paloDist.color, _paloUto.color, porcentaje);
+        if(estado < 0)
+        {
+            float t = Mathf.InverseLerp(-10f, 0f, (float)estado);
+            _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasNeutro.color, porcentaje);
+            _palo.material.color = Color.Lerp(_paloDist.color, _paloNeutro.color, porcentaje);
+        }
+
+        else
+        {
+            float t = Mathf.InverseLerp(0f, 10f, (float)estado);
+            _hojas.material.color = Color.Lerp(_hojasNeutro.color, _hojasUto.color, porcentaje);
+        }
+
     }
 
     ///Lerp Perrón

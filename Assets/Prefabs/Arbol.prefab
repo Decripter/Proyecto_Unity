@@ -161,8 +161,9 @@ MonoBehaviour:
   _palo: {fileID: 1900324150797510692}
   _hojasDist: {fileID: 2100000, guid: 818c1a9fc0628324380975307fa12e61, type: 2}
   _paloDist: {fileID: 2100000, guid: d6659eddd142bb74ca237ea279d56e71, type: 2}
-  _hojasUto: {fileID: 2100000, guid: 22bfa2248779a3e4392c8437acad2e0d, type: 2}
-  _paloUto: {fileID: 2100000, guid: 1ea1c7ff639a43940bfe2e101cc9ec08, type: 2}
+  _hojasUto: {fileID: 2100000, guid: 5eca0dcbcf6473943a43ba0c41d86b36, type: 2}
+  _paloNeutro: {fileID: 2100000, guid: 1ea1c7ff639a43940bfe2e101cc9ec08, type: 2}
+  _hojasNeutro: {fileID: 2100000, guid: 22bfa2248779a3e4392c8437acad2e0d, type: 2}
 --- !u!1 &5874953579451406426
 GameObject:
   m_ObjectHideFlags: 0
