@@ -104,8 +104,10 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
 
         if (distanciaJugador < detectionRadius)
         {
-            Vector2 direction = (player.position + transform.position).normalized;
-            movement = new Vector2(direction.x, 0);
+            Vector3 dirHuir = transform.position - player.position;
+
+            // Lo normalizamos para que solo nos de la dirección (valor de 1)
+            movement = new Vector2(dirHuir.x, 0).normalized;
         }
 
         /*if(distanciaJugador > detectionRadius)

@@ -6,16 +6,9 @@ public class Arbol : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Renderer _hojas;
-    public Renderer _palo;
-
-
 
     public Material _hojasDist;
-    public Material _paloDist;
-
     public Material _hojasUto;
-
-    public Material _paloNeutro;
     public Material _hojasNeutro;
 
     private Color _hojasinicial;
@@ -43,14 +36,7 @@ public class Arbol : MonoBehaviour
         float porcentaje = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
         Actualizar(porcentaje);
         PorcentajeObjetivo = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
-        /*if (estadoMundo < 0)
-        {
-            rutinaCambio = StartCoroutine(Transicion(_hojasDist, _paloDist));
-        }
-        if (estadoMundo >= 0)
-        {
-            rutinaCambio = StartCoroutine(Transicion(_hojasUto, _paloUto));
-        }*/
+
         estado = estadoMundo;
     }
 
@@ -60,7 +46,6 @@ public class Arbol : MonoBehaviour
         {
             float t = Mathf.InverseLerp(-10f, 0f, (float)estado);
             _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasNeutro.color, porcentaje);
-            _palo.material.color = Color.Lerp(_paloDist.color, _paloNeutro.color, porcentaje);
         }
 
         else
@@ -71,30 +56,7 @@ public class Arbol : MonoBehaviour
 
     }
 
-    ///Lerp Perrón
-    IEnumerator Transicion(Material hojasDist, Material paloDist)
-    {
-        float duracion = 2.0f; // Tiempo que tarda en cambiar (2 segundos)
-        float transcurrido = 0;
-
-        while (transcurrido < duracion)
-        {
-            transcurrido += Time.deltaTime;
-            float t = transcurrido / duracion; // Crea un valor de 0 a 1
-
-            _hojasinicial = _hojas.material.color;
-            _paloinicial = _palo.material.color;
-
-    // Aplicamos el Lerp
-            _hojas.material.color = Color.Lerp(_hojasinicial, hojasDist.color, t);
-            _palo.material.color = Color.Lerp(_paloinicial, paloDist.color, t);
-
-            yield return null; // Espera al siguiente frame
-        }
-
-        _hojas.material.color = hojasDist.color;
-        _palo.material.color = paloDist.color;
-    }
+    
 
 
     void Start()
