@@ -73,9 +73,9 @@ public class EnemyMovement : MonoBehaviour
         if(!pacifico)
         {
             mover();
-            AplicarGravedad();
+            
         }
-        
+        AplicarGravedad();
     }
          
     private void mover()
