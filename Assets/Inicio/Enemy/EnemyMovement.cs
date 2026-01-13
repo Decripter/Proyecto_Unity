@@ -77,6 +77,8 @@ public class EnemyMovement : MonoBehaviour
         }
         AplicarGravedad();
     }
+    
+
          
     private void mover()
     {
@@ -102,7 +104,7 @@ public class EnemyMovement : MonoBehaviour
             _SpriteRenderer.flipX = true;
         }
 
-        Vector3 movertarget = (transform.right * movement.x) * speed; //El move original
+        Vector3 movertarget = (transform.right * movement.x) * speed; 
 
 
         _Animator.SetFloat("movement", movement.x * speed);

@@ -56,8 +56,6 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
             _Animator.SetInteger("estadomundo", estadoMundo);
         }
         
-
-
         if (estadoMundo < 0)
         {
             pacifico = false;
@@ -133,7 +131,6 @@ public class Npc : MonoBehaviour, IInteractable, Imatable
 
 
         _Animator.SetFloat("movement", movement.x * speed);
-
 
         currentSpeed = Vector3.Lerp(currentSpeed, movertarget, aceleracion * Time.deltaTime);
 

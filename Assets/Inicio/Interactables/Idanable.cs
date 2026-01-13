@@ -4,3 +4,4 @@ public interface Idanable
     public void RecibirDano(int cantidad);
     public void CurarDano();
 }
+

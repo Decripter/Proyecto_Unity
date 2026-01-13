@@ -16,18 +16,12 @@ public class ControladorNiebla : MonoBehaviour
 
     void ActualizarNiebla(int estado)
     {
-        // 1. Obtenemos el factor 0-1
         float t = WorldManager.instance.GetEstado();
 
-        // 2. Manipulamos el COLOR (Lerp entre los dos colores)
         RenderSettings.fogColor = Color.Lerp(colorDisto, colorUto, t);
 
-        // 3. Manipulamos la DENSIDAD
-        // Usamos Lerp para que sea progresivo. 
-        // Nota: En distopía (t=0) queremos la densidad más alta (densidadDisto).
         RenderSettings.fogDensity = Mathf.Lerp(densidadDisto, densidadUto, t);
 
-        // También podemos cambiar el color del cielo para que combine
         RenderSettings.ambientLight = Color.Lerp(colorDisto * 0.5f, colorUto * 0.5f, t);
     }
 }

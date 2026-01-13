@@ -14,15 +14,17 @@ public class WorldManager : MonoBehaviour
     public TextMeshProUGUI info;
 
 
-    [Header("Mecánica de Altura")]
+
     public Transform jugador;
     private float alturaMaximaAlcanzada = 0f;
-    public float sensibilidadSubida = 1f; // Cuánto sube el valor por cada metro nuevo
-    public float penalizacionCaida = 2f;  // Cuánto baja el valor al caer
+    public float sensibilidadSubida = 1f; 
+    public float penalizacionCaida = 2f;  
 
     public float ProximoCambio;
-    public float intervaloUtopico = 2f; // Cada cuánto tiempo sucede
-    public float intervaloDistopico = 3f; // Cada cuánto tiempo sucede
+
+    //Cada X tiempos
+    public float intervaloUtopico = 2f; 
+    public float intervaloDistopico = 3f; 
     private void OnEnable()
     {
         WorldManager.Change += OnChange;
@@ -49,7 +51,6 @@ public class WorldManager : MonoBehaviour
             Lluvia.volume = 0;
             Pajaros.volume = 0;
         }
-
     }
 
     private void Awake()
@@ -78,24 +79,19 @@ public class WorldManager : MonoBehaviour
     {
         float alturaActual = jugador.position.y;
 
-        // CASO A: El jugador está superando su récord (EL MUNDO MEJORA)
+        // CASO A: El jugador está superando su récord
         if (alturaActual > alturaMaximaAlcanzada)
         {
-            // Calculamos cuánto ha superado el récord en este frame
-            float diferencia = alturaActual - alturaMaximaAlcanzada;
-
             if (Time.time >= ProximoCambio && estadomundo <= 10)
             {
-                    Estado(1);
+                    Estado(3);
                     ProximoCambio = Time.time + intervaloUtopico;
                     alturaMaximaAlcanzada = alturaActual;
             }
-
         }
-        
-        
-        // CASO B: El jugador ha caído por debajo de su récord (EL MUNDO EMPEORA)
-        if (alturaActual < alturaMaximaAlcanzada - 3f) // Un pequeño margen para evitar errores
+       
+        // CASO B: El jugador ha caído por debajo de su récord
+        if (alturaActual < alturaMaximaAlcanzada - 3f) // Margen de 3
         {
 
             if (Time.time >= ProximoCambio && estadomundo >= -10)
@@ -105,8 +101,6 @@ public class WorldManager : MonoBehaviour
                 
             }
         }
-
-
     }
 
     public void Estado(int valor)
@@ -118,6 +112,5 @@ public class WorldManager : MonoBehaviour
     {
         return Mathf.InverseLerp(-10f,10f,estadomundo);
     }
-
 
 }

@@ -33,31 +33,27 @@ public class Arbol : MonoBehaviour
     {
         tiempo += Time.deltaTime;
 
-        float porcentaje = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
-        Actualizar(porcentaje);
+        Actualizar();
         PorcentajeObjetivo = Mathf.InverseLerp(-10f, 10f, (float)estadoMundo);
 
         estado = estadoMundo;
     }
 
-    private void Actualizar(float porcentaje)
+    private void Actualizar()
     {
         if(estado < 0)
         {
             float t = Mathf.InverseLerp(-10f, 0f, (float)estado);
-            _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasNeutro.color, porcentaje);
+            _hojas.material.color = Color.Lerp(_hojasDist.color, _hojasNeutro.color, t);
         }
 
         else
         {
             float t = Mathf.InverseLerp(0f, 10f, (float)estado);
-            _hojas.material.color = Color.Lerp(_hojasNeutro.color, _hojasUto.color, porcentaje);
+            _hojas.material.color = Color.Lerp(_hojasNeutro.color, _hojasUto.color, t);
         }
 
     }
-
-    
-
 
     void Start()
     {
@@ -67,7 +63,6 @@ public class Arbol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PorcentajeActual = Mathf.MoveTowards(PorcentajeActual, PorcentajeObjetivo, Time.deltaTime * 0.5f);
-        Actualizar(PorcentajeActual);
+        Actualizar();
     }
 }

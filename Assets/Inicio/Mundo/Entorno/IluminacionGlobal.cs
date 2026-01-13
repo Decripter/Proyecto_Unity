@@ -30,13 +30,12 @@ public class IluminacionGlobal : MonoBehaviour
     void OnChange(int estado)
     {
         float t = WorldManager.instance.GetEstado(); // 0 a 1
-        //float anguloX = Mathf.Lerp(-20f, 170f, t);
-        //sol.transform.rotation = Quaternion.Euler(anguloX, -30f, 0f);
+        
+        float anguloX = Mathf.Lerp(-20f, 170f, t);
+        sol.transform.rotation = Quaternion.Euler(anguloX, -30f, 0f);
 
 
         sol.intensity = Mathf.Lerp(intensidadDisto, intensidadUto, t);
-
-
         sol.color = Color.Lerp(colorDisto, colorUto, t);
 
 
@@ -44,6 +43,4 @@ public class IluminacionGlobal : MonoBehaviour
         RenderSettings.skybox.SetFloat("_Exposure", Mathf.Lerp(0.2f, 1.0f, t));
         RenderSettings.skybox.SetColor("_SkyTint", Color.Lerp(Color.black, Color.gray, t));
     }
-
-
 }

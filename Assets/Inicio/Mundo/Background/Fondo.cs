@@ -27,7 +27,6 @@ public class Fondo : MonoBehaviour
         if (t < 0.5f)
         {
             // Transición de Distópico a Neutro
-            // Mapeamos el rango 0...0.5 a 0...1
             float mezcla = t / 0.5f;
 
             SetAlpha(fondoDist, 1 - mezcla);
@@ -37,7 +36,6 @@ public class Fondo : MonoBehaviour
         else
         {
             // Transición de Neutro a Utópico
-            // Mapeamos el rango 0.5...1 a 0...1
             float mezcla = (t - 0.5f) / 0.5f;
 
             SetAlpha(fondoDist, 0);

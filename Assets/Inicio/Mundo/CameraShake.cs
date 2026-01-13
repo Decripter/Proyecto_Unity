@@ -17,8 +17,8 @@ public class CameraShake : MonoBehaviour
         float transcurrido = 0f;
         while (transcurrido < duracion)
         {
-            float x = UnityEngine.Random.Range(-1f, 1f) * fuerza;
-            float y = UnityEngine.Random.Range(-1f, 1f) * fuerza;
+            float x = UnityEngine.Random.Range(-1f, 2f) * fuerza;
+            float y = UnityEngine.Random.Range(-1f, 2f) * fuerza;
 
             transform.localPosition = new Vector3(posicionOriginal.x + x, posicionOriginal.y + y, posicionOriginal.z);
 
@@ -28,3 +28,4 @@ public class CameraShake : MonoBehaviour
         transform.localPosition = posicionOriginal;
     }
 }
+

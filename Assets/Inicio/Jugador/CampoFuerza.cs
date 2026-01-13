@@ -22,13 +22,11 @@ public class CampoFuerza : MonoBehaviour
     {
         if (estadoMundo > 0)
         {
-            // MUNDO UTÓPICO: Se acercan (Fuerza negativa hacia el centro)
             ForceField.gravity = 0.5f;
         }
 
         if (estadoMundo < 0)
         {
-            // MUNDO DISTÓPICO: Se asustan (Fuerza positiva hacia afuera)
             ForceField.gravity = 25;
         }
         

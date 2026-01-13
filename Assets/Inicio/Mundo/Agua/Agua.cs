@@ -81,9 +81,6 @@ public class Agua : MonoBehaviour
             _renderer2.material.SetColor("_EmissionColor", colorInterp2);
         }
     }
-
-
-
     private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Idanable idanable))
